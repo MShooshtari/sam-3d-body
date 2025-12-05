@@ -1,0 +1,12 @@
+azure-functions
+numpy
+torch
+torchvision
+Pillow
+opencv-python
+matplotlib
+einops
+omegaconf
+lightning
+scikit-image
+pyyaml

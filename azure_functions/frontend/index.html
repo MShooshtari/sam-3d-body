@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SAM-3D-Body Demo</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 2rem; }
+    .preview { margin-top: 1rem; }
+    img { max-width: 640px; border: 1px solid #ddd; }
+    .row { margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>SAM-3D-Body Demo</h1>
+  <div class="row">
+    <input type="file" id="file" accept="image/*" />
+  </div>
+  <div class="row">
+    <button id="submit">Run Inference</button>
+  </div>
+  <div id="status"></div>
+  <div class="preview">
+    <h3>Rendered Image</h3>
+    <img id="renderImg" alt="Rendered output" />
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:7071/api/infer'; // Update if deployed
+    const fileInput = document.getElementById('file');
+    const submitBtn = document.getElementById('submit');
+    const statusEl = document.getElementById('status');
+    const renderImg = document.getElementById('renderImg');
+
+    submitBtn.addEventListener('click', async () => {
+      const file = fileInput.files[0];
+      if (!file) { statusEl.textContent = 'Please select an image.'; return; }
+      statusEl.textContent = 'Uploading and running inference...';
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('render', 'true');
+      formData.append('return_outputs', 'true');
+      try {
+        const resp = await fetch(API_URL, { method: 'POST', body: formData });
+        if (!resp.ok) {
+          const t = await resp.text();
+          throw new Error(t);
+        }
+        const data = await resp.json();
+        statusEl.textContent = 'Done.';
+        if (data.rend_img) {
+          renderImg.src = 'data:image/png;base64,' + data.rend_img;
+        }
+      } catch (e) {
+        statusEl.textContent = 'Error: ' + e.message;
+      }
+    });
+  </script>
+</body>
+</html>
