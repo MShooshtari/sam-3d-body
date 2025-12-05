@@ -3,7 +3,7 @@
 import os
 
 if "PYOPENGL_PLATFORM" not in os.environ:
-    os.environ["PYOPENGL_PLATFORM"] = "egl"
+    os.environ["PYOPENGL_PLATFORM"] = "windows"
 from typing import List, Optional
 
 import cv2

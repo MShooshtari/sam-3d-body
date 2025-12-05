@@ -5,7 +5,7 @@ from typing import Dict, Optional, Union
 
 import cv2
 import numpy as np
-from detectron2.config import LazyConfig
+# from detectron2.config import LazyConfig
 from omegaconf import OmegaConf
 
 
